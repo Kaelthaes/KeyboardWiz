@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://qj3yjea4nhe1"]
+
+[ext_resource type="PackedScene" uid="uid://kk8gdd7e23he" path="res://healthbar.tscn" id="1_0cl8q"]
+
+[sub_resource type="SystemFont" id="SystemFont_ho17a"]
+font_names = PackedStringArray("tinypixel")
+
+[sub_resource type="Theme" id="Theme_c8fnv"]
+default_font = SubResource("SystemFont_ho17a")
+
+[sub_resource type="LabelSettings" id="LabelSettings_lurnl"]
+font_size = 21
+
+[node name="UI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="healthbar" parent="." instance=ExtResource("1_0cl8q")]
+scale = Vector2(1.5, 1.5)
+
+[node name="castlayout" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -178.0
+offset_top = -61.0
+offset_right = 178.0
+offset_bottom = -21.0
+grow_horizontal = 2
+
+[node name="casttext" type="Label" parent="castlayout"]
+texture_filter = 1
+layout_direction = 1
+layout_mode = 2
+theme = SubResource("Theme_c8fnv")
+label_settings = SubResource("LabelSettings_lurnl")
+horizontal_alignment = 1
+vertical_alignment = 1

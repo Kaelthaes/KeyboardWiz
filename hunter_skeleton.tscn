@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://dx0bpy32xxm5r"]
+
+[ext_resource type="PackedScene" uid="uid://cvxje60jbffpg" path="res://skeleton.tscn" id="1_j4omj"]
+[ext_resource type="Script" path="res://hunter_skeleton.gd" id="2_enig5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xj2p1"]
+size = Vector2(17.8947, 20.5263)
+
+[node name="hunterSkeleton" instance=ExtResource("1_j4omj")]
+collision_mask = 14
+script = ExtResource("2_enig5")
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+modulate = Color(0.643137, 0.643137, 0.643137, 1)
+animation = &"idle"
+
+[node name="hurtbox" type="Area2D" parent="." index="3"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox" index="0"]
+position = Vector2(0, 2.89474)
+shape = SubResource("RectangleShape2D_xj2p1")
+
+[connection signal="body_entered" from="hurtbox" to="." method="_on_hurtbox_body_entered"]

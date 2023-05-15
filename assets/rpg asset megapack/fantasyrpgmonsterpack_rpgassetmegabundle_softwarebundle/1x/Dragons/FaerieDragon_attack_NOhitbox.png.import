@@ -1,0 +1,34 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://c6qqj8d2bml63"
+path="res://.godot/imported/FaerieDragon_attack_NOhitbox.png-039680883d0c2421ece6b0c9b6b8dcb6.ctex"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://assets/rpg asset megapack/fantasyrpgmonsterpack_rpgassetmegabundle_softwarebundle/1x/Dragons/FaerieDragon_attack_NOhitbox.png"
+dest_files=["res://.godot/imported/FaerieDragon_attack_NOhitbox.png-039680883d0c2421ece6b0c9b6b8dcb6.ctex"]
+
+[params]
+
+compress/mode=0
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=false
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=1

@@ -1,0 +1,23 @@
+FANTASY RPG - Heroes pack (by Franuka) v1.4
+-------------------------
+Thank you for getting this character pack!
+Make sure to check my other Fantasy RPG assets to complement this one.
+
+Included are the spritesheets for each character in two sizes (100% and 200%), .png format, transparent background, plus animated projectiles, breakable objects, character portraits and emotes.
+
+Frame size is 48x48 (100%) or 96x96 (200%)
+---
+All assets were created from scratch by me.
+Contact: franukai@gmail.com
+Instagram: https://www.instagram.com/franuka.art/
+Twitter: https://twitter.com/franuka_art
+
+If you like what I do, consider supporting me by buying my packs, sharing, or sending your feedback.
+Have a good time making your games, and send me a link if you make something cool, I'd love to check your projects! :)
+
+CHANGELOG
+----------
+v1.1: Added more animations per character (jump, falling, sleeping, fishing, push)
+v1.2: Added character portrait variatons (happy, nervous, sad, angry, sleeping)
+v1.3: Added extra character emotes (yes, no, surprise, nervous, laugh, question, alert)
+v1.4: Added mining and woodcutting animations for Beastmaster, Swashbuckler and Sorcerer.

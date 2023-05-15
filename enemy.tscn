@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dnsnvrwgj01qk"]
+
+[ext_resource type="Script" path="res://enemy.gd" id="1_4d73i"]
+[ext_resource type="PackedScene" uid="uid://kk8gdd7e23he" path="res://healthbar.tscn" id="2_7hx1a"]
+
+[node name="Enemy" type="Node2D"]
+script = ExtResource("1_4d73i")
+
+[node name="healthbar" parent="." instance=ExtResource("2_7hx1a")]
+position = Vector2(-101, -100)
