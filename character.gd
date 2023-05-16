@@ -1,25 +1,42 @@
 extends CharacterBody2D
+
+#health
 @export var max_health = 10
 var current_health = max_health
+
+#progress and casting loading
 @onready var health_bar: ProgressBar = $CanvasLayer/UI/healthbar/bar
 @onready var casttext: Label = $CanvasLayer/UI/castlayout/casttext
-enum State {IDLE, MOVE, CAST, DAMAGED, DIE}
-var casting = false
-var damaged = false
+
+#states
+enum State {IDLE, MOVE, CAST, BLINKING, DAMAGED, DIE}
 var curstate = State.IDLE
+var state_time = 0.0
+
+#movement handling
 var speed = 5
 var lastmovedir: Vector2 = Vector2.ZERO
 var lastdir: Vector2 = Vector2.ZERO
-var state_time = 0.0
+
+#cast handling
 var castdir = Vector2()
 
-#game over
-var game_over_scene = preload("res://gameover.tscn")
+#state handling vars
+var casting = false
+var damaged = false
+var invulnerable = false
+var blinking = false
+
+#collectible spell saves
+var canblink = true
 
 #spell names/loads
 var fireballscene = preload("res://fireball.tscn")
 
-# Called when the node enters the scene tree for the first time.
+#game over
+var game_over_scene = preload("res://gameover.tscn")
+
+
 func _ready():
 	health_bar.max_value = max_health
 	health_bar.value = current_health
@@ -141,7 +158,8 @@ func spell_check():
 	#possible spells
 	if casttext.text == "fire":
 		launch_fireball(castdir)
-	
+	if casttext.text == "blink" and canblink:
+		invulnerable = true
 	casttext.text = ""
 
 
@@ -194,6 +212,9 @@ func _on_animated_sprite_2d_animation_finished():
 	if curstate == State.CAST:
 		casting = false
 		switch_to(State.IDLE)
+	if curstate == State.BLINKING:
+		blinking = false
+		invulnerable = false
 	if curstate == State.DAMAGED:
 		damaged = false
 		if current_health <= 0:
@@ -205,15 +226,30 @@ func _on_animated_sprite_2d_animation_finished():
 		queue_free()
 		
 func take_damage(damage: int):
-	current_health -= damage
-	health_bar.value = current_health
-	switch_to(State.DAMAGED)
+	if not invulnerable:
+		current_health -= damage
+		health_bar.value = current_health
+		switch_to(State.DAMAGED)
 
 func launch_fireball(launchdir):
 	var fireballspell = fireballscene.instantiate()
 	get_parent().add_child(fireballspell)
 	fireballspell.position = position
 	fireballspell.dir = launchdir
+	
+func blink():
+	if lastmovedir.x > 0:
+		$AnimatedSprite2D.play("blinkRight")
+		$AnimatedSprite2D.flip_h = false
+	elif lastmovedir.x < 0:
+		$AnimatedSprite2D.play("blinkLeft")
+		$AnimatedSprite2D.flip_h = false
+	elif lastmovedir.y > 0:
+		$AnimatedSprite2D.play("blinkDown")
+		$AnimatedSprite2D.flip_h = false
+	elif lastmovedir.y < 0:
+		$AnimatedSprite2D.play("blinkUp")
+		$AnimatedSprite2D.flip_h = false
 
 func game_over():
 	var game_over_instance = game_over_scene.instantiate()
