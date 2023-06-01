@@ -291,7 +291,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"blinkDown",
-"speed": 8.0
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -568,6 +568,9 @@ metadata/_edit_use_anchors_ = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="collectbox"]
 position = Vector2(0, 4)
 shape = SubResource("RectangleShape2D_gbi3r")
+
+[node name="blinkraycast" type="RayCast2D" parent="."]
+collision_mask = 4
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="body_entered" from="collectbox" to="." method="_on_collectbox_body_entered"]

@@ -9,6 +9,7 @@ var current_health = max_health
 @onready var casttext: Label = $CanvasLayer/UI/castlayout/casttext
 @onready var tooltiplabel: Label = $CanvasLayer/UI/spelllayout/spelllist
 var tooltipstr = ""
+@onready var raycast = $blinkraycast
 
 
 #states
@@ -20,9 +21,14 @@ var state_time = 0.0
 var speed = 5
 var lastmovedir: Vector2 = Vector2.ZERO
 var lastdir: Vector2 = Vector2.ZERO
+var blink_duration = 0.5
+const BLINK_DUR = 0.5
+var blink_speed = 600
+
 
 #cast handling
 var castdir = Vector2()
+var is_blinking = false
 
 #state handling vars
 var casting = false
@@ -223,9 +229,6 @@ func _on_animated_sprite_2d_animation_finished():
 	if curstate == State.CAST:
 		casting = false
 		switch_to(State.IDLE)
-	if curstate == State.BLINKING:
-		blinking = false
-		invulnerable = false
 	if curstate == State.DAMAGED:
 		damaged = false
 		if current_health <= 0:
@@ -244,23 +247,46 @@ func take_damage(damage: int):
 
 func launch_fireball(launchdir):
 	var fireballspell = fireballscene.instantiate()
-	get_parent().add_child(fireballspell)
 	fireballspell.position = position
 	fireballspell.dir = launchdir
+	get_parent().add_child(fireballspell)
 	
 func blink():
+	is_blinking = true
+	raycast.enabled = true
+	var blink_distance = blink_speed * BLINK_DUR
 	if lastmovedir.x > 0:
 		$AnimatedSprite2D.play("blinkRight")
 		$AnimatedSprite2D.flip_h = false
+		raycast.target_position = Vector2(blink_distance, 0)  # Blink right
 	elif lastmovedir.x < 0:
 		$AnimatedSprite2D.play("blinkLeft")
 		$AnimatedSprite2D.flip_h = false
+		raycast.target_position = Vector2(-blink_distance, 0)  # Blink left
 	elif lastmovedir.y > 0:
 		$AnimatedSprite2D.play("blinkDown")
 		$AnimatedSprite2D.flip_h = false
+		raycast.target_position = Vector2(0, blink_distance)  # Blink down
 	elif lastmovedir.y < 0:
 		$AnimatedSprite2D.play("blinkUp")
 		$AnimatedSprite2D.flip_h = false
+		raycast.target_position = Vector2(0, -blink_distance)  # Blink 
+	raycast.force_raycast_update() #this is needed to handle a bug
+	var blink_destination = raycast.get_collision_point() if raycast.is_colliding() else global_position + raycast.target_position
+	var actual_distance = blink_destination.distance_to(global_position)
+	var distance_percentage = actual_distance / blink_distance
+	var blink_duration = BLINK_DUR * distance_percentage
+	var blink_tween = create_tween()  # Instantiate a new Tween node
+	blink_tween.tween_property(self, "position", blink_destination, blink_duration)
+	blink_tween.set_trans(Tween.TRANS_QUART)
+	blink_tween.finished.connect(_on_blink_tween_completed)
+	blink_tween.play()
+	
+func _on_blink_tween_completed():
+	invulnerable = false
+	is_blinking = false
+	raycast.enabled = false
+	print("pos after blink: " + str(global_position))
 
 func game_over():
 	var game_over_instance = game_over_scene.instantiate()
