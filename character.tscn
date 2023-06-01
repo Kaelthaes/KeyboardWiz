@@ -320,7 +320,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"blinkLeft",
-"speed": 8.0
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -349,7 +349,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"blinkRight",
-"speed": 8.0
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -378,7 +378,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"blinkUp",
-"speed": 8.0
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -552,7 +552,7 @@ script = ExtResource("1_2rbc8")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_o7shd")
-animation = &"blinkDown"
+animation = &"blinkUp"
 
 [node name="box" type="CollisionShape2D" parent="."]
 position = Vector2(0, 4)

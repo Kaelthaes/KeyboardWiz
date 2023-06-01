@@ -21,9 +21,9 @@ var state_time = 0.0
 var speed = 5
 var lastmovedir: Vector2 = Vector2.ZERO
 var lastdir: Vector2 = Vector2.ZERO
-var blink_duration = 0.5
-const BLINK_DUR = 0.5
-var blink_speed = 600
+var blink_duration = 0.25
+const BLINK_DUR = 0.25
+var blink_speed = 1200
 
 
 #cast handling
@@ -212,7 +212,7 @@ func _physics_process(delta):
 		dir.x = -1	
 		switch_to(State.MOVE)
 	elif Input.is_action_pressed("ui_right"):
-		dir.x = 1		
+		dir.x = 1
 		switch_to(State.MOVE)
 	else:
 		switch_to(State.IDLE)
@@ -228,6 +228,7 @@ func _physics_process(delta):
 func _on_animated_sprite_2d_animation_finished():
 	if curstate == State.CAST:
 		casting = false
+		print("casting: " + str(casting))
 		switch_to(State.IDLE)
 	if curstate == State.DAMAGED:
 		damaged = false
@@ -252,6 +253,7 @@ func launch_fireball(launchdir):
 	get_parent().add_child(fireballspell)
 	
 func blink():
+	invulnerable = true
 	is_blinking = true
 	raycast.enabled = true
 	var blink_distance = blink_speed * BLINK_DUR
@@ -281,12 +283,10 @@ func blink():
 	blink_tween.set_trans(Tween.TRANS_QUART)
 	blink_tween.finished.connect(_on_blink_tween_completed)
 	blink_tween.play()
-	
 func _on_blink_tween_completed():
 	invulnerable = false
 	is_blinking = false
 	raycast.enabled = false
-	print("pos after blink: " + str(global_position))
 
 func game_over():
 	var game_over_instance = game_over_scene.instantiate()
