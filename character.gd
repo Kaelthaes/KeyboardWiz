@@ -3,6 +3,7 @@ extends CharacterBody2D
 #health
 @export var max_health = 10
 var current_health = max_health
+var minorheal = 2
 
 #progress and casting loading
 @onready var health_bar: ProgressBar = $CanvasLayer/UI/healthbar/bar
@@ -10,7 +11,6 @@ var current_health = max_health
 @onready var tooltiplabel: Label = $CanvasLayer/UI/spelllayout/spelllist
 var tooltipstr = ""
 @onready var raycast = $blinkraycast
-
 
 #states
 enum State {IDLE, MOVE, CAST, BLINKING, DAMAGED, DIE}
@@ -29,6 +29,7 @@ var blink_speed = 1200
 #cast handling
 var castdir = Vector2()
 var is_blinking = false
+var is_aegised = false
 
 #state handling vars
 var casting = false
@@ -38,6 +39,8 @@ var blinking = false
 
 #collectible spell saves
 var canblink = false
+var canaegis = false
+var canunlock = false
 
 #spell names/loads
 var fireballscene = preload("res://fireball.tscn")
@@ -170,8 +173,12 @@ func spell_check():
 	#possible spells
 	if casttext.text == "fire":
 		launch_fireball(castdir)
-	if casttext.text == "blink" and canblink:
+	elif casttext.text == "blink" and canblink:
 		blink()
+	elif casttext.text == "aegis of ages":
+		aegis()
+	elif casttext.text == "lay on hands":
+		heal()
 		#do the move
 		#possibly raycast to point and return if it's not allowed?
 		
@@ -228,7 +235,6 @@ func _physics_process(delta):
 func _on_animated_sprite_2d_animation_finished():
 	if curstate == State.CAST:
 		casting = false
-		print("casting: " + str(casting))
 		switch_to(State.IDLE)
 	if curstate == State.DAMAGED:
 		damaged = false
@@ -241,10 +247,13 @@ func _on_animated_sprite_2d_animation_finished():
 		queue_free()
 		
 func take_damage(damage: int):
-	if not invulnerable:
-		current_health -= damage
-		health_bar.value = current_health
-		switch_to(State.DAMAGED)
+	if !invulnerable:
+		if is_aegised:
+			is_aegised = false
+		else:
+			current_health -= damage
+			health_bar.value = current_health
+			switch_to(State.DAMAGED)
 
 func launch_fireball(launchdir):
 	var fireballspell = fireballscene.instantiate()
@@ -277,7 +286,7 @@ func blink():
 	var blink_destination = raycast.get_collision_point() if raycast.is_colliding() else global_position + raycast.target_position
 	var actual_distance = blink_destination.distance_to(global_position)
 	var distance_percentage = actual_distance / blink_distance
-	var blink_duration = BLINK_DUR * distance_percentage
+	blink_duration = BLINK_DUR * distance_percentage
 	var blink_tween = create_tween()  # Instantiate a new Tween node
 	blink_tween.tween_property(self, "position", blink_destination, blink_duration)
 	blink_tween.set_trans(Tween.TRANS_QUART)
@@ -288,6 +297,19 @@ func _on_blink_tween_completed():
 	is_blinking = false
 	raycast.enabled = false
 
+func heal():
+	print("healed")
+	current_health += minorheal
+	health_bar.value = current_health
+	
+
+func aegis():
+	is_aegised=true
+	print(is_aegised)
+
+func unlock():
+	pass
+	
 func game_over():
 	var game_over_instance = game_over_scene.instantiate()
 	get_tree().root.add_child(game_over_instance)
@@ -297,6 +319,8 @@ func _on_collectbox_body_entered(body):
 		body.collect()
 		if body.name == 'blinkscroll':
 			canblink = true
+		if body.name == 'aegisscroll':
+			canaegis = true
 		tooltipupdate()
 		
 func tooltipupdate():
@@ -309,13 +333,37 @@ func tooltipupdate():
 	tooltipstr += "Fireball:
 		Casting text: 'fire'
 		A basic attack spell that hurls a fireball in the direction your facing.\n"
+	
+	
+	#utilities
 	tooltipstr += "\nUtility Spells:\n"
+	#shield
+	if canaegis:
+		tooltipstr += "\tAegis:
+			Casting text: 'aegis of ages'
+			A spell that cloaks you in a golden shield, blocking any hit once before breaking.\n"
+	else:
+		tooltipstr += "Aegis:
+			??????\n"
+	#blink
 	if canblink:
 		tooltipstr += "\tBlink:
 			Casting text: 'blink'
 			A spell that warps you forward a short distance, ignoring obstacles and enemies in the way.\n"
 	else:
 		tooltipstr += "Blink:
+			??????\n"
+	#heal
+	tooltipstr += "\tMinor Heal:
+		Casting text: 'lay on hands'
+		A spell that eases your injures by calling the light of life into your body.\n"
+	#unlock
+	if canunlock:
+		tooltipstr += "\tUnlock Door:
+			Casting text: 'unlock'
+			A spell capable of unlocking any non-magical door.\n"
+	else:
+		tooltipstr += "Unlock:
 			??????\n"
 	
 	tooltiplabel.text = tooltipstr

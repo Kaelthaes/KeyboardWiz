@@ -9,8 +9,8 @@ func collect():
 		$AnimationPlayer.play("rise")
 		collected = true
 
-func _on_animation_player_animation_finished(_anim_name):
-	$MarginContainer/tooltiplabel.text = "Blink Unlocked - Use the button in the top right to view it."
+func _on_animation_player_animation_finished(anim_name):
+	$MarginContainer/tooltiplabel.text = "Blink Unlocked - Use the button in the top right to view"
 	$Timer.start()
 
 func _on_timer_timeout():

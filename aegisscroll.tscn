@@ -1,0 +1,123 @@
+[gd_scene load_steps=8 format=3 uid="uid://bl2346ch1284k"]
+
+[ext_resource type="Texture2D" uid="uid://cpj577gld6bvs" path="res://assets/specific/book 1.png" id="2_p710o"]
+
+[sub_resource type="GDScript" id="GDScript_lr8gc"]
+script/source = "extends CharacterBody2D
+#load character for access
+@onready var animation = $AnimationPlayer.get_animation('rise')
+var collected = false
+
+func collect():
+	if !collected:
+		$AnimationPlayer.play(\"rise\")
+		collected = true
+
+func _on_animation_player_animation_finished(anim_name):
+	$MarginContainer/tooltiplabel.text = \"Aegis Unlocked - Use the button in the top right to view\"
+	$Timer.start()
+
+func _on_timer_timeout():
+	$MarginContainer/tooltiplabel.text = \"\"
+	queue_free()
+"
+
+[sub_resource type="Animation" id="Animation_ggg1o"]
+resource_name = "rise"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Book1:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.2, 2),
+"transitions": PackedFloat32Array(3.13834, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(5.55829, 5.55829, 5.55829, 1), Color(100, 100, 100, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Book1:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 0,
+"values": []
+}
+
+[sub_resource type="Animation" id="Animation_qjedt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Book1:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(5.55829, 5.55829, 5.55829, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_svtji"]
+_data = {
+"RESET": SubResource("Animation_qjedt"),
+"rise": SubResource("Animation_ggg1o")
+}
+
+[sub_resource type="SystemFont" id="SystemFont_h561g"]
+font_names = PackedStringArray("tinypixel")
+
+[sub_resource type="Theme" id="Theme_em58x"]
+default_font = SubResource("SystemFont_h561g")
+default_font_size = 18
+
+[node name="aegisscroll" type="CharacterBody2D"]
+rotation = 37.6991
+script = SubResource("GDScript_lr8gc")
+
+[node name="aegiscroll" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-16, 1, -16, -6, -1.72905, -14.0274, 2, -14, 14, -1, 14, 6, 0, 14, -4, 14)
+
+[node name="Book1" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(2, 2)
+texture = ExtResource("2_p710o")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+reset_on_save = false
+libraries = {
+"": SubResource("AnimationLibrary_svtji")
+}
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = -62.5
+offset_right = 90.0
+offset_bottom = -11.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="tooltiplabel" type="Label" parent="MarginContainer"]
+texture_filter = 1
+layout_mode = 2
+theme = SubResource("Theme_em58x")
+text = "Aegis Spellbook"
+horizontal_alignment = 1
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
