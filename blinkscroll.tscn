@@ -57,7 +57,7 @@ font_names = PackedStringArray("tinypixel")
 
 [sub_resource type="Theme" id="Theme_em58x"]
 default_font = SubResource("SystemFont_h561g")
-default_font_size = 21
+default_font_size = 18
 
 [node name="blinkscroll" type="CharacterBody2D"]
 rotation = 37.6991

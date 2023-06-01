@@ -7,6 +7,9 @@ var current_health = max_health
 #progress and casting loading
 @onready var health_bar: ProgressBar = $CanvasLayer/UI/healthbar/bar
 @onready var casttext: Label = $CanvasLayer/UI/castlayout/casttext
+@onready var tooltiplabel: Label = $CanvasLayer/UI/spelllayout/spelllist
+var tooltipstr = ""
+
 
 #states
 enum State {IDLE, MOVE, CAST, BLINKING, DAMAGED, DIE}
@@ -41,8 +44,11 @@ func _ready():
 	health_bar.max_value = max_health
 	health_bar.value = current_health
 	$AnimatedSprite2D.play("idleDown")
+	tooltipupdate()
 	
 func _input(event):
+	if event.is_action_pressed("cast"):
+		switch_to(State.CAST)
 	if event.is_action_pressed("a"):
 		casttext.text = casttext.text + "a"
 	if event.is_action_pressed("b"):
@@ -187,7 +193,7 @@ func _physics_process(delta):
 	var dir = Vector2.ZERO
 	
 	#cast is first in priority
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("cast"):
 		switch_to(State.CAST)
 		# walking
 	if Input.is_action_pressed("ui_up"):
@@ -265,4 +271,29 @@ func _on_collectbox_body_entered(body):
 		body.collect()
 		if body.name == 'blinkscroll':
 			canblink = true
+		tooltipupdate()
 		
+func tooltipupdate():
+	tooltipstr = ""
+	
+	tooltipstr += "How to play:
+		Type out your spell, then use TAB or ENTER keys to cast spells. Find your way out!\n\n"
+	
+	tooltipstr += "Attack Spells:\n"
+	tooltipstr += "Fireball:
+		Casting text: 'fire'
+		A basic attack spell that hurls a fireball in the direction your facing.\n"
+	tooltipstr += "\nUtility Spells:\n"
+	if canblink:
+		tooltipstr += "\tBlink:
+			Casting text: 'blink'
+			A spell that warps you forward a short distance, ignoring obstacles and enemies in the way.\n"
+	else:
+		tooltipstr += "Blink:
+			??????\n"
+	
+	tooltiplabel.text = tooltipstr
+	
+	
+	
+	

@@ -10,8 +10,7 @@ func collect():
 		collected = true
 
 func _on_animation_player_animation_finished(anim_name):
-	$MarginContainer/tooltiplabel.text = "You have now unlocked the spell 'Blink'
-	Type 'blink' to cast it, and teleport in the direction you're facing!"
+	$MarginContainer/tooltiplabel.text = "Blink Unlocked - Use the button in the top right to view it."
 	$Timer.start()
 
 func _on_timer_timeout():
