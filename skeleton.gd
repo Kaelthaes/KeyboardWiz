@@ -40,6 +40,8 @@ func _physics_process(delta):
 			switch_to(WALKING_STATES[randi_range(0,3)])
 
 func switch_to(new_state: State):
+	if curstate == State.DYING and new_state != State.DEAD:
+		return
 	if new_state == lastdir and new_state in WALKING_STATES:
 		switch_to(WALKING_STATES[randi_range(0,3)])
 	curstate = new_state

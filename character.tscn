@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=3 uid="uid://b01sjtjbywele"]
+[gd_scene load_steps=76 format=3 uid="uid://b01sjtjbywele"]
 
 [ext_resource type="Script" path="res://character.gd" id="1_2rbc8"]
 [ext_resource type="Texture2D" uid="uid://dwew6ngi5lxrk" path="res://assets/rpg asset megapack/fantasyrpgheroespack/2x/Character sprites/Sorcerer_teleport.png" id="2_6txqx"]
@@ -543,13 +543,16 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xcjat"]
 size = Vector2(18, 24)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gbi3r"]
+size = Vector2(20, 26)
+
 [node name="Character" type="CharacterBody2D"]
 script = ExtResource("1_2rbc8")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_o7shd")
-animation = &"cast"
+animation = &"blinkDown"
 
 [node name="box" type="CollisionShape2D" parent="."]
 position = Vector2(0, 4)
@@ -560,4 +563,11 @@ shape = SubResource("RectangleShape2D_xcjat")
 [node name="UI" parent="CanvasLayer" instance=ExtResource("7_26yix")]
 metadata/_edit_use_anchors_ = true
 
+[node name="collectbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="collectbox"]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_gbi3r")
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="body_entered" from="collectbox" to="." method="_on_collectbox_body_entered"]

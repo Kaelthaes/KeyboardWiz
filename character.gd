@@ -28,7 +28,7 @@ var invulnerable = false
 var blinking = false
 
 #collectible spell saves
-var canblink = true
+var canblink = false
 
 #spell names/loads
 var fireballscene = preload("res://fireball.tscn")
@@ -159,7 +159,12 @@ func spell_check():
 	if casttext.text == "fire":
 		launch_fireball(castdir)
 	if casttext.text == "blink" and canblink:
-		invulnerable = true
+		blink()
+		#do the move
+		#possibly raycast to point and return if it's not allowed?
+		
+		
+	#reset
 	casttext.text = ""
 
 
@@ -254,3 +259,10 @@ func blink():
 func game_over():
 	var game_over_instance = game_over_scene.instantiate()
 	get_tree().root.add_child(game_over_instance)
+
+func _on_collectbox_body_entered(body):
+	if body.has_method("collect"):
+		body.collect()
+		if body.name == 'blinkscroll':
+			canblink = true
+		

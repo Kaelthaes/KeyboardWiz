@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://df7rfp2f1djii"]
+[gd_scene load_steps=8 format=3 uid="uid://df7rfp2f1djii"]
 
 [ext_resource type="Texture2D" uid="uid://chx3eaxoe74vt" path="res://assets/2D Pixel Dungeon Asset Pack v2.0/2D Pixel Dungeon Asset Pack/character and tileset/Dungeon_Tileset.png" id="1_7colt"]
 [ext_resource type="PackedScene" uid="uid://b01sjtjbywele" path="res://character.tscn" id="1_tj34w"]
 [ext_resource type="PackedScene" uid="uid://cvxje60jbffpg" path="res://skeleton.tscn" id="3_jmpl7"]
 [ext_resource type="PackedScene" uid="uid://dx0bpy32xxm5r" path="res://hunter_skeleton.tscn" id="4_1a70h"]
+[ext_resource type="PackedScene" uid="uid://dg60qejiff2eu" path="res://blinkscroll.tscn" id="5_e8hre"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_r6qxs"]
 texture = ExtResource("1_7colt")
@@ -347,6 +348,7 @@ texture = ExtResource("1_7colt")
 8:7/0/probability = 0.0
 8:7/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 8:7/0/physics_layer_0/angular_velocity = 0.0
+8:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 9:7/0 = 0
 9:7/0/probability = 0.0
 9:7/0/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -471,3 +473,8 @@ position = Vector2(-568, 595)
 
 [node name="skeleton4" parent="Enemies" instance=ExtResource("3_jmpl7")]
 position = Vector2(-516, 1194)
+
+[node name="collectibles" type="Node2D" parent="."]
+
+[node name="blinkscroll" parent="collectibles" instance=ExtResource("5_e8hre")]
+position = Vector2(559, 205)

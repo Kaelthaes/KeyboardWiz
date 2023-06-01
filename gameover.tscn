@@ -1,4 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://c028g3jjf4l17"]
+[gd_scene load_steps=7 format=3 uid="uid://c028g3jjf4l17"]
+
+[ext_resource type="Script" path="res://gameover.gd" id="1_vxph1"]
 
 [sub_resource type="SystemFont" id="SystemFont_xj0xr"]
 font_names = PackedStringArray("tinypixel")
@@ -9,6 +11,13 @@ default_font = SubResource("SystemFont_xj0xr")
 [sub_resource type="LabelSettings" id="LabelSettings_oot0n"]
 font_size = 84
 
+[sub_resource type="SystemFont" id="SystemFont_x16a6"]
+font_names = PackedStringArray("tinypixel")
+
+[sub_resource type="Theme" id="Theme_mgkrs"]
+default_font = SubResource("SystemFont_x16a6")
+default_font_size = 63
+
 [node name="Control" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -16,6 +25,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_vxph1")
 
 [node name="gameoverbox" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -39,3 +49,16 @@ text = "GAME OVER"
 label_settings = SubResource("LabelSettings_oot0n")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Button" type="Button" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = 356.0
+offset_top = 378.0
+offset_right = 769.0
+offset_bottom = 443.0
+theme = SubResource("Theme_mgkrs")
+text = "Restart
+"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
