@@ -63,9 +63,9 @@ vertical_alignment = 1
 [node name="toolbutton" type="Button" parent="."]
 layout_mode = 0
 offset_left = 983.0
-offset_top = 10.0
+offset_top = 6.0
 offset_right = 1193.0
-offset_bottom = 63.0
+offset_bottom = 59.0
 theme = SubResource("Theme_jrls4")
 text = "Open Spell List"
 

@@ -10,7 +10,7 @@ func collect():
 		collected = true
 
 func _on_animation_player_animation_finished(_anim_name):
-	$MarginContainer/tooltiplabel.text = "Blink Unlocked - Use the button in the top right to view it."
+	$MarginContainer/tooltiplabel.text = "Blink Spell Unlocked!"
 	$Timer.start()
 
 func _on_timer_timeout():

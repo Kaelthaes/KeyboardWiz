@@ -52,6 +52,8 @@ var greaterfireballscene = preload("res://greaterfireball.tscn")
 func _ready():
 	$CanvasLayer/gameover.visible = false
 	$CanvasLayer/UI.visible = true
+	$CanvasLayer/victoryscreen.visible=false
+	$CanvasLayer/doorunlock/doorunlock.visible=false
 	get_node('/root/Floor1/').visible = true
 	health_bar.max_value = max_health
 	health_bar.value = current_health
@@ -182,8 +184,10 @@ func spell_check():
 		blink()
 	elif casttext.text == "aegis of ages" and canaegis:
 		aegis()
-	elif casttext.text == "bless my wounds":
+	elif casttext.text == "blessed wounds":
 		heal()
+	elif casttext.text == "abracadabra":
+		unlock()
 	#reset
 	casttext.text = ""
 
@@ -333,7 +337,8 @@ func aegisbreak():
 	switch_to(State.DAMAGED)
 
 func unlock():
-	pass
+	get_node('/root/Floor1/Door').queue_free()
+	$CanvasLayer/doorunlock/doorunlock.visible = true
 	
 func game_over():
 	$CanvasLayer/gameover.visible = true
@@ -350,6 +355,8 @@ func _on_collectbox_body_entered(body):
 			canaegis = true
 		if body.name == 'greaterfireballscroll':
 			cangreaterfireball = true
+		if body.name == 'unlockscroll':
+			canunlock = true
 		tooltipupdate()
 		
 		
@@ -391,13 +398,13 @@ func tooltipupdate():
 			??????\n"
 	#heal
 	tooltipstr += "\tMinor Heal:
-		Casting text: 'bless my wounds'
+		Casting text: 'blessed wounds'
 		A spell that eases your injures by calling the light of life into your body.\n"
 	#unlock
 	if canunlock:
 		tooltipstr += "\tUnlock Door:
-			Casting text: 'unlock'
-			A spell capable of unlocking any non-magical door.\n"
+			Casting text: 'abracadabra'
+			A spell capable of unlocking any door.\n"
 	else:
 		tooltipstr += "Unlock:
 			??????\n"

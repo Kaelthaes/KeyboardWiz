@@ -1,4 +1,4 @@
-[gd_scene load_steps=77 format=3 uid="uid://b01sjtjbywele"]
+[gd_scene load_steps=80 format=3 uid="uid://b01sjtjbywele"]
 
 [ext_resource type="Script" path="res://character.gd" id="1_2rbc8"]
 [ext_resource type="Texture2D" uid="uid://dwew6ngi5lxrk" path="res://assets/rpg asset megapack/fantasyrpgheroespack/2x/Character sprites/Sorcerer_teleport.png" id="2_6txqx"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://crurh8o46kwhb" path="res://assets/rpg asset megapack/fantasyrpgheroespack/2x/Character sprites/Sorcerer_walk.png" id="6_yl83m"]
 [ext_resource type="PackedScene" uid="uid://qj3yjea4nhe1" path="res://ui.tscn" id="7_26yix"]
 [ext_resource type="PackedScene" uid="uid://c028g3jjf4l17" path="res://gameover.tscn" id="10_rt2ge"]
+[ext_resource type="PackedScene" uid="uid://bf23hj3pc254t" path="res://victoryscreen.tscn" id="11_g8epa"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3vtd7"]
 atlas = ExtResource("2_6txqx")
@@ -544,6 +545,13 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xcjat"]
 size = Vector2(18, 24)
 
+[sub_resource type="SystemFont" id="SystemFont_3m532"]
+font_names = PackedStringArray("tinypixel")
+
+[sub_resource type="Theme" id="Theme_4jwxe"]
+default_font = SubResource("SystemFont_3m532")
+default_font_size = 21
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gbi3r"]
 size = Vector2(20, 26)
 
@@ -566,6 +574,29 @@ shape = SubResource("RectangleShape2D_xcjat")
 metadata/_edit_use_anchors_ = true
 
 [node name="gameover" parent="CanvasLayer" instance=ExtResource("10_rt2ge")]
+visible = false
+
+[node name="victoryscreen" parent="CanvasLayer" instance=ExtResource("11_g8epa")]
+visible = false
+
+[node name="doorunlock" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.025
+anchor_right = 0.5
+anchor_bottom = 0.025
+offset_top = -1.52588e-05
+offset_right = 40.0
+offset_bottom = 11.3
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="doorunlock" type="Label" parent="CanvasLayer/doorunlock"]
+layout_mode = 2
+theme = SubResource("Theme_4jwxe")
+text = "Door Unlocked! Find the exit to win!"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="collectbox" type="Area2D" parent="."]
 
