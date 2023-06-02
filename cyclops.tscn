@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://blw3fupmi1hsn"]
+[gd_scene load_steps=52 format=3 uid="uid://blw3fupmi1hsn"]
 
 [ext_resource type="Script" path="res://cyclops.gd" id="1_qnhcj"]
 [ext_resource type="Texture2D" uid="uid://c14ofl5ijxbrv" path="res://assets/specific/Cyclops_attack.png" id="2_3aaqk"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://k88triiyeok5" path="res://assets/specific/Cyclops_hit.png" id="4_vfe7u"]
 [ext_resource type="Texture2D" uid="uid://6fcd4xww1w0l" path="res://assets/specific/Cyclops_idle.png" id="5_k6nbd"]
 [ext_resource type="Texture2D" uid="uid://fw8c1l43otf5" path="res://assets/specific/Cyclops_walk.png" id="6_sw8p5"]
+[ext_resource type="PackedScene" uid="uid://kk8gdd7e23he" path="res://healthbar.tscn" id="7_hqoyt"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6vver"]
 atlas = ExtResource("2_3aaqk")
@@ -235,7 +236,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"die",
-"speed": 5.0
+"speed": 1.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -296,7 +297,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
-"speed": 5.0
+"speed": 4.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -371,25 +372,32 @@ animations = [{
 size = Vector2(12, 19)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cb1hy"]
-size = Vector2(16.5, 23.1667)
+size = Vector2(13.3333, 20.3333)
 
 [node name="cyclops" type="CharacterBody2D"]
 scale = Vector2(6, 6)
 collision_layer = 2
-collision_mask = 31
+collision_mask = 29
 script = ExtResource("1_qnhcj")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_k8v1j")
-animation = &"idle"
+animation = &"die"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 3.5)
 shape = SubResource("RectangleShape2D_irt28")
 
+[node name="healthbar" parent="." instance=ExtResource("7_hqoyt")]
+position = Vector2(-20.5, -17)
+scale = Vector2(0.2, 0.2)
+
 [node name="attackbox" type="Area2D" parent="."]
 
 [node name="triggerarea" type="CollisionShape2D" parent="attackbox"]
-position = Vector2(0.083334, 3.75)
+position = Vector2(5.96046e-08, 3.5)
 shape = SubResource("RectangleShape2D_cb1hy")
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="body_entered" from="attackbox" to="." method="_on_attackbox_body_entered"]

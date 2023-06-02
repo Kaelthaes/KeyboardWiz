@@ -10,3 +10,4 @@ func _ready():
 func _on_hurtbox_body_entered(body):
 	if body.name == "Character":
 		body.take_damage(damage)
+	

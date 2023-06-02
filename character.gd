@@ -41,15 +41,18 @@ var blinking = false
 #collectible spell saves
 var canblink = false
 var canaegis = false
+var cangreaterfireball = false
 var canunlock = false
+
 
 #spell names/loads
 var fireballscene = preload("res://fireball.tscn")
-
+var greaterfireballscene = preload("res://greaterfireball.tscn")
 
 func _ready():
 	$CanvasLayer/gameover.visible = false
 	$CanvasLayer/UI.visible = true
+	get_node('/root/Floor1/').visible = true
 	health_bar.max_value = max_health
 	health_bar.value = current_health
 	$AnimatedSprite2D.play("idleDown")
@@ -173,16 +176,14 @@ func spell_check():
 	#possible spells
 	if casttext.text == "fire":
 		launch_fireball(castdir)
+	elif casttext.text == "volcanic fury" and cangreaterfireball:
+		launch_greater_fireball(castdir)
 	elif casttext.text == "blink" and canblink:
 		blink()
-	elif casttext.text == "aegis of ages":
+	elif casttext.text == "aegis of ages" and canaegis:
 		aegis()
 	elif casttext.text == "bless my wounds":
 		heal()
-		#do the move
-		#possibly raycast to point and return if it's not allowed?
-		
-		
 	#reset
 	casttext.text = ""
 
@@ -259,6 +260,12 @@ func launch_fireball(launchdir):
 	fireballspell.position = position
 	fireballspell.dir = launchdir
 	get_parent().add_child(fireballspell)
+
+func launch_greater_fireball(launchdir):
+	var greaterfireballspell = greaterfireballscene.instantiate()
+	greaterfireballspell.position = position
+	greaterfireballspell.dir = launchdir
+	get_parent().add_child(greaterfireballspell)
 	
 func blink():
 	invulnerable = true
@@ -331,6 +338,7 @@ func unlock():
 func game_over():
 	$CanvasLayer/gameover.visible = true
 	$CanvasLayer/UI.visible = false
+	get_node('/root/Floor1/').visible = false
 	get_tree().paused = true
 
 func _on_collectbox_body_entered(body):
@@ -340,6 +348,8 @@ func _on_collectbox_body_entered(body):
 			canblink = true
 		if body.name == 'aegisscroll':
 			canaegis = true
+		if body.name == 'greaterfireballscroll':
+			cangreaterfireball = true
 		tooltipupdate()
 		
 		
@@ -354,7 +364,13 @@ func tooltipupdate():
 		Casting text: 'fire'
 		A basic attack spell that hurls a fireball in the direction your facing.\n"
 	
-	
+	if cangreaterfireball:
+		tooltipstr += "Greater Fireball:
+			Casting text: 'volcanic fury'
+			Channel your magic to launch a massive fireball that will devastate anything in it's path\n"
+	else:
+		tooltipstr += "Greater Fireball
+			?????\n"
 	#utilities
 	tooltipstr += "\nUtility Spells:\n"
 	#shield

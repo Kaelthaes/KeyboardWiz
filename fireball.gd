@@ -25,8 +25,10 @@ func switch_to(new_state: State):
 	if new_state == State.EXPLODE:
 		speed = 0
 		animation.play("explosion")
+		scale = Vector2(1,1)
 		animation.offset.x = 2
 		animation.offset.y = 20
+		$Area2D/flight.queue_free()
 
 func _on_area_2d_body_entered(body):
 	if curstate == State.FLIGHT:

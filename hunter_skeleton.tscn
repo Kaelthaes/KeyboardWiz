@@ -7,7 +7,6 @@
 size = Vector2(18.9474, 22.1053)
 
 [node name="hunterSkeleton" instance=ExtResource("1_j4omj")]
-collision_mask = 158
 script = ExtResource("2_enig5")
 
 [node name="AnimatedSprite2D" parent="." index="0"]
