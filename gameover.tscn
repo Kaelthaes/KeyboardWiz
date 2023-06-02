@@ -18,7 +18,7 @@ font_names = PackedStringArray("tinypixel")
 default_font = SubResource("SystemFont_x16a6")
 default_font_size = 63
 
-[node name="Control" type="Control"]
+[node name="gameover" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -51,6 +51,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Button" type="Button" parent="."]
+process_mode = 3
 texture_filter = 1
 layout_mode = 0
 offset_left = 356.0

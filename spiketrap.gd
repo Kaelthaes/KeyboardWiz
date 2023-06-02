@@ -1,5 +1,5 @@
 extends Node2D
-var damage = 5
+var damage = 3
 enum State {SIT, STAB}
 var curstate = State.SIT
 var active = false

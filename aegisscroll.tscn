@@ -14,7 +14,7 @@ func collect():
 		collected = true
 
 func _on_animation_player_animation_finished(anim_name):
-	$MarginContainer/tooltiplabel.text = \"Aegis Unlocked - Use the button in the top right to view\"
+	$MarginContainer/tooltiplabel.text = \"Aegis Spell Unlocked\"
 	$Timer.start()
 
 func _on_timer_timeout():

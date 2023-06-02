@@ -9,7 +9,6 @@ var minorheal = 2
 @onready var health_bar: ProgressBar = $CanvasLayer/UI/healthbar/bar
 @onready var casttext: Label = $CanvasLayer/UI/castlayout/casttext
 @onready var tooltiplabel: Label = $CanvasLayer/UI/spelllayout/spelllist
-var tooltipstr = ""
 @onready var raycast = $blinkraycast
 
 #states
@@ -27,9 +26,11 @@ var blink_speed = 1200
 
 
 #cast handling
+var tooltipstr = ""
 var castdir = Vector2()
 var is_blinking = false
 var is_aegised = false
+var aegis_tween
 
 #state handling vars
 var casting = false
@@ -45,11 +46,10 @@ var canunlock = false
 #spell names/loads
 var fireballscene = preload("res://fireball.tscn")
 
-#game over
-var game_over_scene = preload("res://gameover.tscn")
-
 
 func _ready():
+	$CanvasLayer/gameover.visible = false
+	$CanvasLayer/UI.visible = true
 	health_bar.max_value = max_health
 	health_bar.value = current_health
 	$AnimatedSprite2D.play("idleDown")
@@ -177,7 +177,7 @@ func spell_check():
 		blink()
 	elif casttext.text == "aegis of ages":
 		aegis()
-	elif casttext.text == "lay on hands":
+	elif casttext.text == "bless my wounds":
 		heal()
 		#do the move
 		#possibly raycast to point and return if it's not allowed?
@@ -244,12 +244,11 @@ func _on_animated_sprite_2d_animation_finished():
 			switch_to(State.IDLE)
 	if curstate == State.DIE:
 		game_over()
-		queue_free()
 		
 func take_damage(damage: int):
 	if !invulnerable:
 		if is_aegised:
-			is_aegised = false
+			aegisbreak()
 		else:
 			current_health -= damage
 			health_bar.value = current_health
@@ -298,21 +297,41 @@ func _on_blink_tween_completed():
 	raycast.enabled = false
 
 func heal():
-	print("healed")
-	current_health += minorheal
-	health_bar.value = current_health
-	
+	if current_health + minorheal > max_health:
+		health_bar.value = max_health
+	else:
+		current_health += minorheal
+		health_bar.value = current_health
+		heal
+	var mhealtween = create_tween()
+	var healthtween = create_tween()  # Instantiate a new Tween node
+	healthtween.tween_property(health_bar, "modulate", Color.LIGHT_SKY_BLUE, 0.25)
+	healthtween.tween_property(health_bar, "modulate", Color.WHITE, 0.25)
+	healthtween.set_trans(Tween.TRANS_QUINT)
+	mhealtween.tween_property(self, "modulate", Color.DARK_GREEN, 0.125)
+	mhealtween.tween_property(self, "modulate", Color.WHITE, 0.25)
+	mhealtween.set_trans(Tween.TRANS_QUINT)
 
 func aegis():
 	is_aegised=true
-	print(is_aegised)
+	aegis_tween = create_tween()  # Instantiate a new Tween node
+	aegis_tween.tween_property(self, "modulate", Color.DARK_GOLDENROD, 1)
+	aegis_tween.tween_property(self, "modulate", Color.GOLD, 0.5)
+	aegis_tween.set_trans(Tween.TRANS_QUAD)
+	aegis_tween.set_loops(0)	
+func aegisbreak():
+	is_aegised=false
+	aegis_tween.kill()
+	self.modulate = Color.WHITE
+	switch_to(State.DAMAGED)
 
 func unlock():
 	pass
 	
 func game_over():
-	var game_over_instance = game_over_scene.instantiate()
-	get_tree().root.add_child(game_over_instance)
+	$CanvasLayer/gameover.visible = true
+	$CanvasLayer/UI.visible = false
+	get_tree().paused = true
 
 func _on_collectbox_body_entered(body):
 	if body.has_method("collect"):
@@ -322,6 +341,7 @@ func _on_collectbox_body_entered(body):
 		if body.name == 'aegisscroll':
 			canaegis = true
 		tooltipupdate()
+		
 		
 func tooltipupdate():
 	tooltipstr = ""
@@ -355,7 +375,7 @@ func tooltipupdate():
 			??????\n"
 	#heal
 	tooltipstr += "\tMinor Heal:
-		Casting text: 'lay on hands'
+		Casting text: 'bless my wounds'
 		A spell that eases your injures by calling the light of life into your body.\n"
 	#unlock
 	if canunlock:

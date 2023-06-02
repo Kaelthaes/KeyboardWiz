@@ -213,4 +213,5 @@ cast={
 2d_physics/layer_3="Tile"
 2d_physics/layer_4="Projectile"
 2d_physics/layer_5="Obstacles"
-2d_physics/layer_8="deadzone"
+2d_physics/layer_6="Blockers"
+2d_physics/layer_8="EnemyBlockers"

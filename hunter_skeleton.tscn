@@ -4,20 +4,23 @@
 [ext_resource type="Script" path="res://hunter_skeleton.gd" id="2_enig5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xj2p1"]
-size = Vector2(17.8947, 20.5263)
+size = Vector2(18.9474, 22.1053)
 
 [node name="hunterSkeleton" instance=ExtResource("1_j4omj")]
-collision_mask = 14
+collision_mask = 158
 script = ExtResource("2_enig5")
 
 [node name="AnimatedSprite2D" parent="." index="0"]
 modulate = Color(0.470588, 0.470588, 0.470588, 1)
 animation = &"idle"
 
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(0, 2.63158)
+
 [node name="hurtbox" type="Area2D" parent="." index="3"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox" index="0"]
-position = Vector2(0, 2.89474)
+position = Vector2(0, 2.63158)
 shape = SubResource("RectangleShape2D_xj2p1")
 
 [connection signal="body_entered" from="hurtbox" to="." method="_on_hurtbox_body_entered"]

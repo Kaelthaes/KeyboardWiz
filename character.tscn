@@ -1,4 +1,4 @@
-[gd_scene load_steps=76 format=3 uid="uid://b01sjtjbywele"]
+[gd_scene load_steps=77 format=3 uid="uid://b01sjtjbywele"]
 
 [ext_resource type="Script" path="res://character.gd" id="1_2rbc8"]
 [ext_resource type="Texture2D" uid="uid://dwew6ngi5lxrk" path="res://assets/rpg asset megapack/fantasyrpgheroespack/2x/Character sprites/Sorcerer_teleport.png" id="2_6txqx"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://5nxxx1jol5nc" path="res://assets/rpg asset megapack/fantasyrpgheroespack/2x/Character sprites/Sorcerer_itemGot.png" id="5_qk40j"]
 [ext_resource type="Texture2D" uid="uid://crurh8o46kwhb" path="res://assets/rpg asset megapack/fantasyrpgheroespack/2x/Character sprites/Sorcerer_walk.png" id="6_yl83m"]
 [ext_resource type="PackedScene" uid="uid://qj3yjea4nhe1" path="res://ui.tscn" id="7_26yix"]
+[ext_resource type="PackedScene" uid="uid://c028g3jjf4l17" path="res://gameover.tscn" id="10_rt2ge"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3vtd7"]
 atlas = ExtResource("2_6txqx")
@@ -547,6 +548,7 @@ size = Vector2(18, 24)
 size = Vector2(20, 26)
 
 [node name="Character" type="CharacterBody2D"]
+position = Vector2(-2, 0)
 script = ExtResource("1_2rbc8")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -562,6 +564,8 @@ shape = SubResource("RectangleShape2D_xcjat")
 
 [node name="UI" parent="CanvasLayer" instance=ExtResource("7_26yix")]
 metadata/_edit_use_anchors_ = true
+
+[node name="gameover" parent="CanvasLayer" instance=ExtResource("10_rt2ge")]
 
 [node name="collectbox" type="Area2D" parent="."]
 
