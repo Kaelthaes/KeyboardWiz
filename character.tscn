@@ -547,6 +547,7 @@ size = Vector2(18, 24)
 
 [sub_resource type="SystemFont" id="SystemFont_3m532"]
 font_names = PackedStringArray("tinypixel")
+subpixel_positioning = 0
 
 [sub_resource type="Theme" id="Theme_4jwxe"]
 default_font = SubResource("SystemFont_3m532")

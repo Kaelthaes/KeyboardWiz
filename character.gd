@@ -410,7 +410,3 @@ func tooltipupdate():
 			??????\n"
 	
 	tooltiplabel.text = tooltipstr
-	
-	
-	
-	
