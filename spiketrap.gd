@@ -26,7 +26,7 @@ func _on_animated_sprite_2d_animation_finished():
 					if body.name == "Character":
 						body.take_damage(damage)
 					else:
-						body.take_damage = 50
+						body.take_damage(25)
 		
 	elif curstate == State.STAB:
 		$AnimatedSprite2D.play("sit")

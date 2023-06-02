@@ -89,4 +89,3 @@ shape = SubResource("RectangleShape2D_0ontn")
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="body_entered" from="hurtbox" to="." method="_on_hurtbox_body_entered"]
-[connection signal="body_exited" from="hurtbox" to="." method="_on_hurtbox_body_exited"]
